@@ -39,10 +39,16 @@ function shuffle(array) {
 
 
 let grabAllCards = document.querySelectorAll('.card');
+let openedCards = [];
 
 grabAllCards.forEach(function(card) {
      card.addEventListener('click', function(e) {
-         console.log(e);
-         card.classList.add('open', 'show');
+         // console.log(e);
+         if (openedCards.length >= 2) {
+             // hide cards
+         } else {
+             openedCards.push(card);
+             card.classList.add('open', 'show');
+         }
     })
 });
