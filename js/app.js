@@ -19,7 +19,7 @@ let cards = ["fa-diamond", "fa-diamond",
  */
 
 function generateCard(card) {
-    return `<li class="card"><i class="fa ${card}"></i></li>`;
+    return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -74,12 +74,24 @@ grabAllCards.forEach(function (card) {
             card.classList.add('open', 'show');
 
             if (openedCards.length == 2) {
-                setTimeout(function () {
-                    openedCards.forEach(function (card) {
-                        card.classList.remove('open', 'show');
-                    });
+                if (openedCards[0].dataset.card == openedCards[1].dataset.card) {
+                    openedCards[0].classList.add('match');
+                    openedCards[0].classList.add('open');
+                    openedCards[0].classList.add('show');
+                    
+                    openedCards[1].classList.add('match');
+                    openedCards[1].classList.add('open');
+                    openedCards[1].classList.add('show');
+                    
                     openedCards = [];
-                }, 1000);
+                } else {
+                    setTimeout(function () {
+                        openedCards.forEach(function (card) {
+                            card.classList.remove('open', 'show');
+                        });
+                        openedCards = [];
+                    }, 1000);
+                }
             }
 
         }
