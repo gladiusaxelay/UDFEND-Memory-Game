@@ -43,11 +43,12 @@ function initGame() {
     let boardHTML = shuffle(cards).map(function(card) {
         return generateCard(card);
     });
+    
+    moves = 0;
+    moveCount.innerText = moves;
 
     deck.innerHTML = boardHTML.join('');
 }
-
-initGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -61,10 +62,16 @@ initGame();
  */
 
 
-let grabAllCards = document.querySelectorAll('.card');
 let openedCards = [];
+let moves = 0;
+let moveCount = document.querySelector('.moves');
+
+initGame();
+
+let grabAllCards = document.querySelectorAll('.card');
 
 grabAllCards.forEach(function (card) {
+    console.log(card);
     card.addEventListener('click', function (e) {
 
         // console.log(openedCards);
@@ -92,9 +99,13 @@ grabAllCards.forEach(function (card) {
                         openedCards = [];
                     }, 1000);
                 }
+
+                moves += 1;
+                moveCount.innerText = moves;
             }
 
         }
 
     });
 });
+
