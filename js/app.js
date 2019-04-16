@@ -71,41 +71,50 @@ initGame();
 let grabAllCards = document.querySelectorAll('.card');
 
 grabAllCards.forEach(function (card) {
-    console.log(card);
+    // console.log(card);
     card.addEventListener('click', function (e) {
 
-        // console.log(openedCards);
+            console.log(openedCards);
 
-        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
-            openedCards.push(card);
-            card.classList.add('open', 'show');
+            if (!card.classList.contains('open') && !card.classList.contains('show') &&
+                !card.classList.contains('match')) {
+                if (openedCards.length < 2) {
+                    openedCards.push(card);
+                    card.classList.add('open', 'show');
+                    console.log(openedCards);
+                }
 
-            if (openedCards.length == 2) {
-                if (openedCards[0].dataset.card == openedCards[1].dataset.card) {
-                    openedCards[0].classList.add('match');
-                    openedCards[0].classList.add('open');
-                    openedCards[0].classList.add('show');
-                    
-                    openedCards[1].classList.add('match');
-                    openedCards[1].classList.add('open');
-                    openedCards[1].classList.add('show');
-                    
-                    openedCards = [];
-                } else {
+                if (openedCards.length == 2) {
                     setTimeout(function () {
-                        openedCards.forEach(function (card) {
-                            card.classList.remove('open', 'show');
-                        });
-                        openedCards = [];
+                        console.log(openedCards);
+                        if (openedCards[0].dataset.card == openedCards[1].dataset.card) {
+                            openedCards[0].classList.add('match');
+                            openedCards[0].classList.add('open');
+                            openedCards[0].classList.add('show');
+
+                            openedCards[1].classList.add('match');
+                            openedCards[1].classList.add('open');
+                            openedCards[1].classList.add('show');
+
+                            openedCards = [];
+                        } else {
+
+                            openedCards.forEach(function (card) {
+                                card.classList.remove('open', 'show');
+                            });
+                            openedCards = [];
+
+                        }
+
+                        moves += 1;
+                        moveCount.innerText = moves;
                     }, 1000);
                 }
 
-                moves += 1;
-                moveCount.innerText = moves;
             }
 
         }
 
-    });
+    );
 });
 
