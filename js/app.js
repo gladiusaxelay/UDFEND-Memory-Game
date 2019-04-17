@@ -1,15 +1,15 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards = ["fa-diamond", "fa-diamond",
-            "fa-anchor", "fa-anchor",
-            "fa-bolt", "fa-bolt",
-            "fa-cube", "fa-cube",
-            "fa-leaf", "fa-leaf",
-            "fa-bicycle", "fa-bicycle",
-            "fa-paper-plane-o", "fa-paper-plane-o",
-            "fa-bomb", "fa-bomb",
-            ];
+let cards = ["fa-diamond x", "fa-diamond",
+    "fa-anchor", "fa-anchor",
+    "fa-bolt", "fa-bolt",
+    "fa-cube", "fa-cube",
+    "fa-leaf", "fa-leaf",
+    "fa-bicycle", "fa-bicycle",
+    "fa-paper-plane-o", "fa-paper-plane-o",
+    "fa-bomb", "fa-bomb",
+];
 
 /*
  * Display the cards on the page
@@ -40,10 +40,10 @@ function shuffle(array) {
 
 function initGame() {
     let deck = document.querySelector('.deck');
-    let boardHTML = shuffle(cards).map(function(card) {
+    let boardHTML = shuffle(cards).map(function (card) {
         return generateCard(card);
     });
-    
+
     moves = 0;
     moveCount.innerText = moves;
 
@@ -61,7 +61,6 @@ function initGame() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-
 let openedCards = [];
 let moves = 0;
 let moveCount = document.querySelector('.moves');
@@ -71,50 +70,47 @@ initGame();
 let grabAllCards = document.querySelectorAll('.card');
 
 grabAllCards.forEach(function (card) {
-    // console.log(card);
+    console.log(card);
     card.addEventListener('click', function (e) {
 
-            console.log(openedCards);
+        console.log(openedCards);
 
-            if (!card.classList.contains('open') && !card.classList.contains('show') &&
-                !card.classList.contains('match')) {
-                if (openedCards.length < 2) {
-                    openedCards.push(card);
-                    card.classList.add('open', 'show');
-                    console.log(openedCards);
-                }
+        const thisCard = this;
+        const oldCard = openedCards[0];
 
-                if (openedCards.length == 2) {
-                    setTimeout(function () {
-                        console.log(openedCards);
-                        if (openedCards[0].dataset.card == openedCards[1].dataset.card) {
-                            openedCards[0].classList.add('match');
-                            openedCards[0].classList.add('open');
-                            openedCards[0].classList.add('show');
+        if (openedCards.length === 1) {
+            card.classList.add('open', 'show', 'disable');
+            openedCards.push(card);
+            checkCards(thisCard, oldCard);
 
-                            openedCards[1].classList.add('match');
-                            openedCards[1].classList.add('open');
-                            openedCards[1].classList.add('show');
-
-                            openedCards = [];
-                        } else {
-
-                            openedCards.forEach(function (card) {
-                                card.classList.remove('open', 'show');
-                            });
-                            openedCards = [];
-
-                        }
-
-                        moves += 1;
-                        moveCount.innerText = moves;
-                    }, 1000);
-                }
-
-            }
-
+        } else {
+            card.classList.add('open', 'show', 'disable');
+            openedCards.push(card);
         }
-
-    );
+    })
 });
 
+function checkCards(thisCard, oldCard) {
+    if (thisCard.dataset.card === oldCard.dataset.card) {
+        thisCard.classList.add('match');
+        oldCard.classList.add('match');
+        openedCards = [];
+
+    } else {
+        setTimeout(function () {
+            thisCard.classList.remove('open', 'show', 'disable');
+            oldCard.classList.remove('open', 'show', 'disable');
+
+        }, 500);
+
+        openedCards = [];
+
+    }
+
+    refreshMoves();
+}
+
+function refreshMoves() {
+    moves += 1;
+    moveCount.innerText = moves;
+}
