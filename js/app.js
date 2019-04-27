@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards = ["fa-diamond x", "fa-diamond",
+let cards = ["fa-diamond", "fa-diamond",
     "fa-anchor", "fa-anchor",
     "fa-bolt", "fa-bolt",
     "fa-cube", "fa-cube",
@@ -34,6 +34,7 @@ function timerStart() {
 };
 
 function timerStop() {
+    countSeconds = 0;
     clearInterval(timerStart);
 };
 
@@ -97,10 +98,7 @@ initGame();
 function listenToCards() {
     let grabAllCards = document.querySelectorAll('.card');
     grabAllCards.forEach(function (card) {
-        console.log(card);
         card.addEventListener('click', function (e) {
-
-            console.log(openedCards);
 
             const thisCard = this;
             const oldCard = openedCards[0];
@@ -114,8 +112,7 @@ function listenToCards() {
                 card.classList.add('open', 'show', 'disable');
                 openedCards.push(card);
                 checkCards(thisCard, oldCard);
-                if (score == 1) {
-                    timerStop();
+                if (score == 8) {
                     modal.classList.add('show-modal');
                     timeModal.innerText = countSeconds;
                 }
@@ -194,14 +191,12 @@ closeBtnModal.addEventListener('click', function () {
 
 const rating = document.querySelector('.stars').childNodes;
 const ratingModal = document.querySelector('.stars-modal').childNodes;
-console.log(ratingModal);
 
 function stars() {
-    if (moves === 3) {
-        console.log('star color');
+    if (moves === 10) {
         rating[5].classList.add('white');
         ratingModal[5].classList.add('white');
-    } else if (moves === 5) {
+    } else if (moves === 15) {
         rating[3].classList.add('white');
         ratingModal[3].classList.add('white');
     }
