@@ -22,6 +22,20 @@ function generateCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
+// Timer
+const time = document.querySelector('.timer');
+let countSeconds = 0;
+function timerStart() {
+    setInterval(function() {
+        countSeconds++;
+        time.innerHTML = countSeconds + 'secs.';
+    }, 1000);
+}
+
+function timerStop() {
+    clearInterval(timerStart);
+}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length,
@@ -39,7 +53,6 @@ function shuffle(array) {
 }
 
 function initGame() {
-    let deck = document.querySelector('.deck');
     let boardHTML = shuffle(cards).map(function (card) {
         return generateCard(card);
     });
@@ -48,6 +61,9 @@ function initGame() {
     moveCount.innerText = moves;
 
     deck.innerHTML = boardHTML.join('');
+
+    listenToCards();
+    
 }
 
 /*
@@ -61,34 +77,42 @@ function initGame() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+let beginGame = true;
 let openedCards = [];
 let moves = 0;
 let moveCount = document.querySelector('.moves');
+let deck = document.querySelector('.deck');
 
 initGame();
 
-let grabAllCards = document.querySelectorAll('.card');
+function listenToCards () {
+    let grabAllCards = document.querySelectorAll('.card');
+    grabAllCards.forEach(function (card) {
+        console.log(card);
+        card.addEventListener('click', function (e) {
+    
+            console.log(openedCards);
+    
+            const thisCard = this;
+            const oldCard = openedCards[0];
 
-grabAllCards.forEach(function (card) {
-    console.log(card);
-    card.addEventListener('click', function (e) {
-
-        console.log(openedCards);
-
-        const thisCard = this;
-        const oldCard = openedCards[0];
-
-        if (openedCards.length === 1) {
-            card.classList.add('open', 'show', 'disable');
-            openedCards.push(card);
-            checkCards(thisCard, oldCard);
-
-        } else {
-            card.classList.add('open', 'show', 'disable');
-            openedCards.push(card);
-        }
+            if(beginGame){
+                timerStart();
+                beginGame = false;
+            }
+    
+            if (openedCards.length === 1) {
+                card.classList.add('open', 'show', 'disable');
+                openedCards.push(card);
+                checkCards(thisCard, oldCard);
+    
+            } else {
+                card.classList.add('open', 'show', 'disable');
+                openedCards.push(card);
+            }
+        })
     })
-});
+};
 
 function checkCards(thisCard, oldCard) {
     if (thisCard.dataset.card === oldCard.dataset.card) {
@@ -101,7 +125,7 @@ function checkCards(thisCard, oldCard) {
             thisCard.classList.remove('open', 'show', 'disable');
             oldCard.classList.remove('open', 'show', 'disable');
 
-        }, 500);
+        }, 700);
 
         openedCards = [];
 
@@ -114,3 +138,24 @@ function refreshMoves() {
     moves += 1;
     moveCount.innerText = moves;
 }
+
+const resetClick = document.querySelector('.restart');
+resetClick.addEventListener('click', function() { 
+
+    // Clear current board
+    deck.innerHTML = "";
+
+    // Clear data
+    clearAll();
+
+    // Make a new board
+    initGame();
+
+});
+
+function clearAll() {
+    openedCards = [];
+    countSeconds = 0;
+    timerStop();
+    
+};
