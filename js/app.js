@@ -20,21 +20,22 @@ let cards = ["fa-diamond x", "fa-diamond",
 
 function generateCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
-}
+};
 
 // Timer
 const time = document.querySelector('.timer');
 let countSeconds = 0;
+
 function timerStart() {
-    setInterval(function() {
+    setInterval(function () {
         countSeconds++;
         time.innerHTML = countSeconds + 'secs.';
     }, 1000);
-}
+};
 
 function timerStop() {
     clearInterval(timerStart);
-}
+};
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -50,7 +51,7 @@ function shuffle(array) {
     }
 
     return array;
-}
+};
 
 function initGame() {
     let boardHTML = shuffle(cards).map(function (card) {
@@ -63,7 +64,8 @@ function initGame() {
     deck.innerHTML = boardHTML.join('');
 
     listenToCards();
-    
+
+    ;
 }
 
 /*
@@ -80,32 +82,44 @@ function initGame() {
 let beginGame = true;
 let openedCards = [];
 let moves = 0;
+let score = 0;
 let moveCount = document.querySelector('.moves');
 let deck = document.querySelector('.deck');
 
+// Modal handlers
+const modal = document.querySelector('.modal');
+const closeBtnModal = document.querySelector('.close-btn-modal');
+const restartBtnModal = document.querySelector('.restart-btn-modal');
+const timeModal = document.querySelector('.time-values');
+
 initGame();
 
-function listenToCards () {
+function listenToCards() {
     let grabAllCards = document.querySelectorAll('.card');
     grabAllCards.forEach(function (card) {
         console.log(card);
         card.addEventListener('click', function (e) {
-    
+
             console.log(openedCards);
-    
+
             const thisCard = this;
             const oldCard = openedCards[0];
 
-            if(beginGame){
+            if (beginGame) {
                 timerStart();
                 beginGame = false;
             }
-    
+
             if (openedCards.length === 1) {
                 card.classList.add('open', 'show', 'disable');
                 openedCards.push(card);
                 checkCards(thisCard, oldCard);
-    
+                if (score == 1) {
+                    timerStop();
+                    modal.classList.add('show-modal');
+                    timeModal.innerText = countSeconds;
+                }
+
             } else {
                 card.classList.add('open', 'show', 'disable');
                 openedCards.push(card);
@@ -118,6 +132,7 @@ function checkCards(thisCard, oldCard) {
     if (thisCard.dataset.card === oldCard.dataset.card) {
         thisCard.classList.add('match');
         oldCard.classList.add('match');
+        score++;
         openedCards = [];
 
     } else {
@@ -132,15 +147,16 @@ function checkCards(thisCard, oldCard) {
     }
 
     refreshMoves();
-}
+};
 
 function refreshMoves() {
     moves += 1;
     moveCount.innerText = moves;
-}
+    stars();
+};
 
 const resetClick = document.querySelector('.restart');
-resetClick.addEventListener('click', function() { 
+resetClick.addEventListener('click', function () {
 
     // Clear current board
     deck.innerHTML = "";
@@ -153,9 +169,50 @@ resetClick.addEventListener('click', function() {
 
 });
 
+restartBtnModal.addEventListener('click', function () {
+
+    // Hide modal
+    modal.classList.remove('show-modal');
+
+    // Clear current board
+    deck.innerHTML = "";
+
+    // Clear data
+    clearAll();
+
+    // Make a new board
+    initGame();
+
+});
+
+closeBtnModal.addEventListener('click', function () {
+
+    // Hide modal
+    modal.classList.remove('show-modal');
+
+});
+
+const rating = document.querySelector('.stars').childNodes;
+const ratingModal = document.querySelector('.stars-modal').childNodes;
+console.log(ratingModal);
+
+function stars() {
+    if (moves === 3) {
+        console.log('star color');
+        rating[5].classList.add('white');
+        ratingModal[5].classList.add('white');
+    } else if (moves === 5) {
+        rating[3].classList.add('white');
+        ratingModal[3].classList.add('white');
+    }
+};
+
 function clearAll() {
     openedCards = [];
-    countSeconds = 0;
+    countSeconds, score = 0;
     timerStop();
-    
+    rating[5].classList.remove('white');
+    rating[3].classList.remove('white');
+    ratingModal[5].classList.remove('white');
+    ratingModal[3].classList.remove('white');
 };
