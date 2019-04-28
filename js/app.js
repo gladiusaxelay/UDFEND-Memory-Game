@@ -117,7 +117,6 @@ function listenToCards() {
             
             // Comparing cards to determine if match
             if (openedCards.length === 1) {
-                deck.classList.add('disable');
                 card.classList.add('open', 'show', 'disable');
                 openedCards.push(card);
                 checkCards(thisCard, oldCard);
