@@ -1,6 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
+
 let cards = ["fa-diamond", "fa-diamond",
     "fa-anchor", "fa-anchor",
     "fa-bolt", "fa-bolt",
@@ -54,6 +55,8 @@ function shuffle(array) {
     return array;
 };
 
+// Initialize game
+
 function initGame() {
     let boardHTML = shuffle(cards).map(function (card) {
         return generateCard(card);
@@ -66,7 +69,6 @@ function initGame() {
 
     listenToCards();
 
-    ;
 }
 
 /*
@@ -80,12 +82,15 @@ function initGame() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-let beginGame = true;
+// Game variables
+ let beginGame = true;
 let openedCards = [];
 let moves = 0;
 let score = 0;
-let moveCount = document.querySelector('.moves');
-let deck = document.querySelector('.deck');
+
+// Game handlers
+const moveCount = document.querySelector('.moves');
+const deck = document.querySelector('.deck');
 
 // Modal handlers
 const modal = document.querySelector('.modal');
@@ -95,6 +100,7 @@ const timeModal = document.querySelector('.time-values');
 
 initGame();
 
+// Creating deck event listeners per card
 function listenToCards() {
     let grabAllCards = document.querySelectorAll('.card');
     grabAllCards.forEach(function (card) {
@@ -102,13 +108,16 @@ function listenToCards() {
 
             const thisCard = this;
             const oldCard = openedCards[0];
-
+            
+            // Condition whereby to begin the timer
             if (beginGame) {
                 timerStart();
                 beginGame = false;
             }
-
+            
+            // Comparing cards to determine if match
             if (openedCards.length === 1) {
+                deck.classList.add('disable');
                 card.classList.add('open', 'show', 'disable');
                 openedCards.push(card);
                 checkCards(thisCard, oldCard);
@@ -125,6 +134,7 @@ function listenToCards() {
     })
 };
 
+// Camparison function between the current 2 open cards
 function checkCards(thisCard, oldCard) {
     if (thisCard.dataset.card === oldCard.dataset.card) {
         thisCard.classList.add('match');
@@ -136,22 +146,22 @@ function checkCards(thisCard, oldCard) {
         setTimeout(function () {
             thisCard.classList.remove('open', 'show', 'disable');
             oldCard.classList.remove('open', 'show', 'disable');
-
         }, 700);
 
         openedCards = [];
-
     }
 
     refreshMoves();
 };
 
+// Update the moves counter
 function refreshMoves() {
     moves += 1;
     moveCount.innerText = moves;
     stars();
 };
 
+// Restart the game again from the refresh button in the board
 const resetClick = document.querySelector('.restart');
 resetClick.addEventListener('click', function () {
 
@@ -166,6 +176,7 @@ resetClick.addEventListener('click', function () {
 
 });
 
+// Restart the game again from the Modal pop-up
 restartBtnModal.addEventListener('click', function () {
 
     // Hide modal
@@ -189,6 +200,7 @@ closeBtnModal.addEventListener('click', function () {
 
 });
 
+// Update the rating counter
 const rating = document.querySelector('.stars').childNodes;
 const ratingModal = document.querySelector('.stars-modal').childNodes;
 
