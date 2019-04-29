@@ -1,14 +1,3 @@
-# UDFEND-Memory-Game-Project
-
-## Title 1
-
-## Title 2
-
-To get started, open `js/app.js` and `index.html` files.
-
-
-## Title 3
-
 # UDFEND-Portfolio-Site
 
 On this project I must develop a complete browser-based card matching game. the game board consists of sixteen "cards" arranged in a grid. The deck is made up of eight different pairs of cards, each with different symbols on one side. The cards are arranged randomly on the grid with the symbol face down. 
@@ -33,8 +22,4 @@ For specific, detailed instructions and starter code, look at the FEND project i
 
 ## Running the Site
 
-1. Open `index.html` in you Web Browser.
-
-## Acknowledgments
-
-* 
+1. Open `index.html` in you Web Browser and have fun!.

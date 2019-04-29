@@ -69,7 +69,7 @@ function initGame() {
 
     listenToCards();
 
-}
+};
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -83,7 +83,7 @@ function initGame() {
  */
 
 // Game variables
- let beginGame = true;
+let beginGame = true;
 let openedCards = [];
 let moves = 0;
 let score = 0;
